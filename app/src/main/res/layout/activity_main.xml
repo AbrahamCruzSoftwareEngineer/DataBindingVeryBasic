@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--The layout for Data Binding would be slightly different when compared to
+traditional one. The root element for the layout is <layout>.-->
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Then the Model is referred in <variable> element inside root <data> element-->
+    <data>
+        <variable name="user" type="com.example.simple_data_binding.Model.User"/>
+        <variable name="activity" type="com.example.simple_data_binding.MainActivity"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        tools:context=".simple_data_binding.MainActivity">
+
+        <!--for binding data the format should be similar to @ followed by field name in braces { }-->
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp"
+            android:text="@{user.name}"/>
+        <!--where user refers to the model and name is the String field in that model.
+                   When this name field in the model is updated it will be reflected in the View-->
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/name"
+            android:inputType="textEmailAddress"
+            android:text="@={user.email}"/>
+        <!--where the additional = is for two way binding. ie The values changed in EditText is reflected back in the model.-->
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/email"
+            android:text="Get data"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:onClick="@{()->activity.onButtonClick(user.email)}"/>
+        <!--where activity variable denotes our MainActivity. The onButtonClick() is a method in our Activity which
+        takes String as parameter. When the button is pressed the email String is passed from the model and the
+        method is called. The -> operator shows this is a lambda expression.-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/button"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"
+            android:text="@{user.email}"/>
+
+
+    </RelativeLayout>
+</layout>
